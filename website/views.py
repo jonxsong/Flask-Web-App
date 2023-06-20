@@ -3,6 +3,9 @@ from flask_login import login_required, current_user
 from .models import Note
 from website._init_ import db
 import json
+import openai
+
+openai.api_key = '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'
 
 views = Blueprint('views', __name__) 
 
@@ -22,6 +25,20 @@ def home():
             flash('Note added!', category='success')
 
     return render_template("home.html", user=current_user)
+
+@views.route('/chat', methods=['POST'])
+def chat():
+    message = request.form['message']
+    response = openai.Completion.create(
+        engine='text-davinci-003',
+        prompt=message,
+        max_tokens=50,
+        n=1,
+        stop=None,
+        temperature=0.7
+    )
+    reply = response.choices[0].text.strip()
+    return reply
 
 @views.route('/delete-note', methods=['POST'])
 def delete_note():

@@ -1,4 +1,44 @@
+<!DOCTYPE html>
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
+<html>
+<head>
+  <title>ChatGPT Flask App</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+  <div id="chat-container">
+    <div id="messages"></div>
+    <input type="text" id="user-input" autocomplete="off" placeholder="Type your message...">
+    <button id="send-btn">Send</button>
+  </div>
+
+  <script>
+    $(document).ready(function() {
+      $('#send-btn').click(function() {
+        var userMessage = $('#user-input').val();
+        $('#messages').append('<p><strong>You:</strong> ' + userMessage + '</p>');
+        $('#user-input').val('');
+
+        $.ajax({
+          type: 'POST',
+          url: '/chat',
+          data: {'message': userMessage},
+          success: function(reply) {
+            $('#messages').append('<p><strong>Bot:</strong> ' + reply + '</p>');
+          }
+        });
+      });
+
+      $('#user-input').keypress(function(event) {
+        if (event.which === 13) {
+          event.preventDefault();
+          $('#send-btn').click();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
     <h1 align="center">Notes</h1>
     <ul class="list-group list-group-flush" id="notes">
       {% for note in user.notes %}
