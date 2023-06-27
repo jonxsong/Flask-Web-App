@@ -7,26 +7,28 @@ function deleteNote(noteId) {
     });
 }
 
-$(document).ready(function() {
-  $('#send-btn').click(function() {
-    var userMessage = $('#user-input').val();
-    $('#messages').append('<p><strong>You:</strong> ' + userMessage + '</p>');
-    $('#user-input').val('');
+// $(document).ready(function() {
+//   var socket = io.connect('http://' + document.domain + ':' + location.port);
 
-    $.ajax({
-      type: 'POST',
-      url: '/chat',
-      data: {'message': userMessage},
-      success: function(reply) {
-        $('#messages').append('<p><strong>Bot:</strong> ' + reply + '</p>');
-      }
-    });
-  });
+//   socket.on('connect', function() {
+//     socket.emit('user_connected', {data: 'New user connected!'});
+//   });
 
-  $('#user-input').keypress(function(event) {
-    if (event.which === 13) {
-      event.preventDefault();
-      $('#send-btn').click();
-    }
-  });
-});
+//   socket.on('bot_response', function(response) {
+//     $('#messages').append('<p><strong>Bot:</strong> ' + response.data + '</p>');
+//   });
+
+//   $('#send-btn').click(function() {
+//     var userMessage = $('#user-input').val();
+//     $('#messages').append('<p><strong>You:</strong> ' + userMessage + '</p>');
+//     socket.emit('user_message', {data: userMessage});
+//     $('#user-input').val('');
+//   });
+
+//   $('#user-input').keypress(function(event) {
+//     if (event.which === 13) {
+//       event.preventDefault();
+//       $('#send-btn').click();
+//     }
+//   });
+// });
